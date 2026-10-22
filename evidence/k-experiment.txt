@@ -1,0 +1,132 @@
+CEDAR-RAG k experiment: Q1, embedding retriever only (actual program output)
+Code unchanged; default k remains 2. k is overridden on the command line only.
+
+################ k = 1 ################
+$ .venv/bin/python embed_retrieve.py "May a trained graduate student operate the laser alone at 19:00?" -k 1
+
+=== Setup ===
+Model: sentence-transformers/all-MiniLM-L6-v2
+Device: cpu
+Python 3.14.8 | sentence-transformers 6.2.0 | torch 2.14.1 | transformers 5.20.2 | numpy 2.5.4
+Document matrix shape: (6, 384) (dtype float32)
+Retrieval uses all 384 coordinates of every vector; only the first 12 are displayed.
+
+=== Document vectors (first 12 of 384 coordinates) ===
+A1 (access.txt) length=1.000000
+    [-0.0039, +0.0188, +0.0218, -0.0179, -0.0058, -0.0612, -0.0891, +0.0321, -0.0584, +0.0111, +0.0031, -0.0123]
+A2 (access.txt) length=1.000000
+    [+0.0298, -0.0435, -0.0289, +0.0303, -0.0507, -0.0310, +0.0361, -0.0391, -0.0322, -0.0424, +0.0498, +0.0019]
+T1 (training.txt) length=1.000000
+    [+0.0063, -0.0708, +0.0345, +0.0146, -0.1167, -0.0114, -0.0708, -0.0761, -0.0806, -0.0767, +0.0325, +0.1357]
+T2 (training.txt) length=1.000000
+    [+0.0447, -0.0044, +0.0042, -0.0058, +0.0211, -0.0151, -0.0108, -0.0301, -0.0191, -0.0234, +0.0280, -0.0367]
+B1 (booking.txt) length=1.000000
+    [+0.0856, -0.0417, -0.0194, +0.0377, -0.0668, -0.0053, -0.0260, -0.0618, -0.0186, -0.0023, -0.0050, +0.0659]
+B2 (booking.txt) length=1.000000
+    [+0.0673, +0.0924, -0.0079, +0.0634, -0.0105, +0.0043, -0.0020, -0.0750, +0.0667, +0.0378, -0.0040, +0.0335]
+All document lengths within 1e-05 of 1: True (max |length - 1| = 9.71e-08)
+
+=== Question 1 ===
+Question: May a trained graduate student operate the laser alone at 19:00?
+Question vector shape: (384,) (dtype float32)
+Question vector length=1.000000; within 1e-05 of 1: True
+    [+0.0485, +0.0060, -0.0148, -0.0017, -0.0642, -0.0427, +0.0008, -0.0575, -0.0771, -0.0306, +0.0749, +0.0967]
+
+All scores (dot product over 384 coordinates, ranked):
+  A2  access.txt    score=0.686446
+  T1  training.txt  score=0.581953
+  B1  booking.txt   score=0.532696
+  A1  access.txt    score=0.374249
+  T2  training.txt  score=0.270452
+  B2  booking.txt   score=0.128740
+Cosine check: max |cosine - dot| = 5.16e-08; agree within 1e-05: True
+
+Selected passages (top k = 1):
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+
+Breakdown for top passage A2: question[i] x document[i]
+  i=0   +0.0485 x +0.0298 = +0.0014
+  i=1   +0.0060 x -0.0435 = -0.0003
+  i=2   -0.0148 x -0.0289 = +0.0004
+  i=3   -0.0017 x +0.0303 = -0.0001
+  i=4   -0.0642 x -0.0507 = +0.0033
+  i=5   -0.0427 x -0.0310 = +0.0013
+  i=6   +0.0008 x +0.0361 = +0.0000
+  i=7   -0.0575 x -0.0391 = +0.0023
+  i=8   -0.0771 x -0.0322 = +0.0025
+  i=9   -0.0306 x -0.0424 = +0.0013
+  i=10  +0.0749 x +0.0498 = +0.0037
+  i=11  +0.0967 x +0.0019 = +0.0002
+  Subtotal, coordinates 0-11 (12 terms):          +0.016112
+  Subtotal, coordinates 12-383 (372 terms):       +0.670334
+  Full similarity (sum of both subtotals):        +0.686446
+  Matches ranked score 0.686446: True
+
+################ k = 3 ################
+$ .venv/bin/python embed_retrieve.py "May a trained graduate student operate the laser alone at 19:00?" -k 3
+
+=== Setup ===
+Model: sentence-transformers/all-MiniLM-L6-v2
+Device: cpu
+Python 3.14.8 | sentence-transformers 6.2.0 | torch 2.14.1 | transformers 5.20.2 | numpy 2.5.4
+Document matrix shape: (6, 384) (dtype float32)
+Retrieval uses all 384 coordinates of every vector; only the first 12 are displayed.
+
+=== Document vectors (first 12 of 384 coordinates) ===
+A1 (access.txt) length=1.000000
+    [-0.0039, +0.0188, +0.0218, -0.0179, -0.0058, -0.0612, -0.0891, +0.0321, -0.0584, +0.0111, +0.0031, -0.0123]
+A2 (access.txt) length=1.000000
+    [+0.0298, -0.0435, -0.0289, +0.0303, -0.0507, -0.0310, +0.0361, -0.0391, -0.0322, -0.0424, +0.0498, +0.0019]
+T1 (training.txt) length=1.000000
+    [+0.0063, -0.0708, +0.0345, +0.0146, -0.1167, -0.0114, -0.0708, -0.0761, -0.0806, -0.0767, +0.0325, +0.1357]
+T2 (training.txt) length=1.000000
+    [+0.0447, -0.0044, +0.0042, -0.0058, +0.0211, -0.0151, -0.0108, -0.0301, -0.0191, -0.0234, +0.0280, -0.0367]
+B1 (booking.txt) length=1.000000
+    [+0.0856, -0.0417, -0.0194, +0.0377, -0.0668, -0.0053, -0.0260, -0.0618, -0.0186, -0.0023, -0.0050, +0.0659]
+B2 (booking.txt) length=1.000000
+    [+0.0673, +0.0924, -0.0079, +0.0634, -0.0105, +0.0043, -0.0020, -0.0750, +0.0667, +0.0378, -0.0040, +0.0335]
+All document lengths within 1e-05 of 1: True (max |length - 1| = 9.71e-08)
+
+=== Question 1 ===
+Question: May a trained graduate student operate the laser alone at 19:00?
+Question vector shape: (384,) (dtype float32)
+Question vector length=1.000000; within 1e-05 of 1: True
+    [+0.0485, +0.0060, -0.0148, -0.0017, -0.0642, -0.0427, +0.0008, -0.0575, -0.0771, -0.0306, +0.0749, +0.0967]
+
+All scores (dot product over 384 coordinates, ranked):
+  A2  access.txt    score=0.686446
+  T1  training.txt  score=0.581953
+  B1  booking.txt   score=0.532696
+  A1  access.txt    score=0.374249
+  T2  training.txt  score=0.270452
+  B2  booking.txt   score=0.128740
+Cosine check: max |cosine - dot| = 5.16e-08; agree within 1e-05: True
+
+Selected passages (top k = 3):
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+[T1] (training.txt) Laser training must be renewed every 12 months. A current training record is required before operating the laser.
+[B1] (booking.txt) Laser room bookings are limited to two hours per session. Reserve the room through the equipment calendar.
+
+Breakdown for top passage A2: question[i] x document[i]
+  i=0   +0.0485 x +0.0298 = +0.0014
+  i=1   +0.0060 x -0.0435 = -0.0003
+  i=2   -0.0148 x -0.0289 = +0.0004
+  i=3   -0.0017 x +0.0303 = -0.0001
+  i=4   -0.0642 x -0.0507 = +0.0033
+  i=5   -0.0427 x -0.0310 = +0.0013
+  i=6   +0.0008 x +0.0361 = +0.0000
+  i=7   -0.0575 x -0.0391 = +0.0023
+  i=8   -0.0771 x -0.0322 = +0.0025
+  i=9   -0.0306 x -0.0424 = +0.0013
+  i=10  +0.0749 x +0.0498 = +0.0037
+  i=11  +0.0967 x +0.0019 = +0.0002
+  Subtotal, coordinates 0-11 (12 terms):          +0.016112
+  Subtotal, coordinates 12-383 (372 terms):       +0.670334
+  Full similarity (sum of both subtotals):        +0.686446
+  Matches ranked score 0.686446: True
+
+################ Summary table (selected IDs read from the output above) ################
+| k | selected IDs | A1 present | A2 present | coverage (retrieved required chunks / 2) |
+|---|---|---|---|---|
+| 1 | A2 | no | yes | 1/2 |
+| 3 | A2, T1, B1 | no | yes | 1/2 |

@@ -1,0 +1,246 @@
+CEDAR-RAG retrieval runs, k = 2 (actual program output)
+Cedar Lab is fictional; its rules are classroom examples, not safety guidance.
+
+################ Q1 ################
+$ python3 retrieve.py "May a trained graduate student operate the laser alone at 19:00?" 2
+Question: May a trained graduate student operate the laser alone at 19:00?
+Query keywords: 00, 19, alone, graduate, laser, operate, student, trained
+k = 2
+
+All scores (ranked):
+  A1  access.txt    score=3  matched: 00, graduate, trained
+  A2  access.txt    score=2  matched: laser, trained
+  B1  booking.txt   score=1  matched: laser
+  T1  training.txt  score=1  matched: laser
+  T2  training.txt  score=1  matched: trained
+  B2  booking.txt   score=0  matched: -
+
+Selected passages (2):
+[A1] (access.txt) General laboratory access hours are 08:00 to 22:00 for trained graduate students. Access outside these hours requires written approval from the lab manager.
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+
+################ Q2 ################
+$ python3 retrieve.py "Can I use the laser without another person present?" 2
+Question: Can I use the laser without another person present?
+Query keywords: another, laser, person, present, use, without
+k = 2
+
+All scores (ranked):
+  A2  access.txt    score=2  matched: laser, present
+  B1  booking.txt   score=1  matched: laser
+  T1  training.txt  score=1  matched: laser
+  A1  access.txt    score=0  matched: -
+  B2  booking.txt   score=0  matched: -
+  T2  training.txt  score=0  matched: -
+
+Selected passages (2):
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+[B1] (booking.txt) Laser room bookings are limited to two hours per session. Reserve the room through the equipment calendar.
+
+################ Q3 ################
+$ python3 retrieve.py "How frequently must I refresh my laser qualification?" 2
+Question: How frequently must I refresh my laser qualification?
+Query keywords: frequently, how, laser, must, my, qualification, refresh
+k = 2
+
+All scores (ranked):
+  T1  training.txt  score=2  matched: laser, must
+  A2  access.txt    score=1  matched: laser
+  B1  booking.txt   score=1  matched: laser
+  A1  access.txt    score=0  matched: -
+  B2  booking.txt   score=0  matched: -
+  T2  training.txt  score=0  matched: -
+
+Selected passages (2):
+[T1] (training.txt) Laser training must be renewed every 12 months. A current training record is required before operating the laser.
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+
+################ Q4 ################
+$ python3 retrieve.py "What is the laser wavelength?" 2
+Question: What is the laser wavelength?
+Query keywords: laser, wavelength, what
+k = 2
+
+All scores (ranked):
+  A2  access.txt    score=1  matched: laser
+  B1  booking.txt   score=1  matched: laser
+  T1  training.txt  score=1  matched: laser
+  A1  access.txt    score=0  matched: -
+  B2  booking.txt   score=0  matched: -
+  T2  training.txt  score=0  matched: -
+
+Selected passages (2):
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+[B1] (booking.txt) Laser room bookings are limited to two hours per session. Reserve the room through the equipment calendar.
+
+################ Embedding retriever, Q1-Q4 (documents encoded once) ################
+$ .venv/bin/python embed_retrieve.py "May a trained graduate student operate the laser alone at 19:00?" "Can I use the laser without another person present?" "How frequently must I refresh my laser qualification?" "What is the laser wavelength?" -k 2
+=== Setup ===
+Model: sentence-transformers/all-MiniLM-L6-v2
+Device: cpu
+Python 3.14.8 | sentence-transformers 6.2.0 | torch 2.14.1 | transformers 5.20.2 | numpy 2.5.4
+Document matrix shape: (6, 384) (dtype float32)
+Retrieval uses all 384 coordinates of every vector; only the first 12 are displayed.
+
+=== Document vectors (first 12 of 384 coordinates) ===
+A1 (access.txt) length=1.000000
+    [-0.0039, +0.0188, +0.0218, -0.0179, -0.0058, -0.0612, -0.0891, +0.0321, -0.0584, +0.0111, +0.0031, -0.0123]
+A2 (access.txt) length=1.000000
+    [+0.0298, -0.0435, -0.0289, +0.0303, -0.0507, -0.0310, +0.0361, -0.0391, -0.0322, -0.0424, +0.0498, +0.0019]
+T1 (training.txt) length=1.000000
+    [+0.0063, -0.0708, +0.0345, +0.0146, -0.1167, -0.0114, -0.0708, -0.0761, -0.0806, -0.0767, +0.0325, +0.1357]
+T2 (training.txt) length=1.000000
+    [+0.0447, -0.0044, +0.0042, -0.0058, +0.0211, -0.0151, -0.0108, -0.0301, -0.0191, -0.0234, +0.0280, -0.0367]
+B1 (booking.txt) length=1.000000
+    [+0.0856, -0.0417, -0.0194, +0.0377, -0.0668, -0.0053, -0.0260, -0.0618, -0.0186, -0.0023, -0.0050, +0.0659]
+B2 (booking.txt) length=1.000000
+    [+0.0673, +0.0924, -0.0079, +0.0634, -0.0105, +0.0043, -0.0020, -0.0750, +0.0667, +0.0378, -0.0040, +0.0335]
+All document lengths within 1e-05 of 1: True (max |length - 1| = 9.71e-08)
+
+=== Question 1 ===
+Question: May a trained graduate student operate the laser alone at 19:00?
+Question vector shape: (384,) (dtype float32)
+Question vector length=1.000000; within 1e-05 of 1: True
+    [+0.0485, +0.0060, -0.0148, -0.0017, -0.0642, -0.0427, +0.0008, -0.0575, -0.0771, -0.0306, +0.0749, +0.0967]
+
+All scores (dot product over 384 coordinates, ranked):
+  A2  access.txt    score=0.686446
+  T1  training.txt  score=0.581953
+  B1  booking.txt   score=0.532696
+  A1  access.txt    score=0.374249
+  T2  training.txt  score=0.270452
+  B2  booking.txt   score=0.128740
+Cosine check: max |cosine - dot| = 5.16e-08; agree within 1e-05: True
+
+Selected passages (top k = 2):
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+[T1] (training.txt) Laser training must be renewed every 12 months. A current training record is required before operating the laser.
+
+Breakdown for top passage A2: question[i] x document[i]
+  i=0   +0.0485 x +0.0298 = +0.0014
+  i=1   +0.0060 x -0.0435 = -0.0003
+  i=2   -0.0148 x -0.0289 = +0.0004
+  i=3   -0.0017 x +0.0303 = -0.0001
+  i=4   -0.0642 x -0.0507 = +0.0033
+  i=5   -0.0427 x -0.0310 = +0.0013
+  i=6   +0.0008 x +0.0361 = +0.0000
+  i=7   -0.0575 x -0.0391 = +0.0023
+  i=8   -0.0771 x -0.0322 = +0.0025
+  i=9   -0.0306 x -0.0424 = +0.0013
+  i=10  +0.0749 x +0.0498 = +0.0037
+  i=11  +0.0967 x +0.0019 = +0.0002
+  Subtotal, coordinates 0-11 (12 terms):          +0.016112
+  Subtotal, coordinates 12-383 (372 terms):       +0.670334
+  Full similarity (sum of both subtotals):        +0.686446
+  Matches ranked score 0.686446: True
+
+=== Question 2 ===
+Question: Can I use the laser without another person present?
+Question vector shape: (384,) (dtype float32)
+Question vector length=1.000000; within 1e-05 of 1: True
+    [-0.0378, -0.0049, -0.0282, -0.0339, -0.0531, -0.0218, +0.1002, -0.0135, -0.0502, -0.0710, +0.0827, +0.0600]
+
+All scores (dot product over 384 coordinates, ranked):
+  A2  access.txt    score=0.585193
+  T1  training.txt  score=0.434761
+  B1  booking.txt   score=0.425356
+  T2  training.txt  score=0.190754
+  B2  booking.txt   score=0.057623
+  A1  access.txt    score=0.035636
+Cosine check: max |cosine - dot| = 2.65e-08; agree within 1e-05: True
+
+Selected passages (top k = 2):
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+[T1] (training.txt) Laser training must be renewed every 12 months. A current training record is required before operating the laser.
+
+Breakdown for top passage A2: question[i] x document[i]
+  i=0   -0.0378 x +0.0298 = -0.0011
+  i=1   -0.0049 x -0.0435 = +0.0002
+  i=2   -0.0282 x -0.0289 = +0.0008
+  i=3   -0.0339 x +0.0303 = -0.0010
+  i=4   -0.0531 x -0.0507 = +0.0027
+  i=5   -0.0218 x -0.0310 = +0.0007
+  i=6   +0.1002 x +0.0361 = +0.0036
+  i=7   -0.0135 x -0.0391 = +0.0005
+  i=8   -0.0502 x -0.0322 = +0.0016
+  i=9   -0.0710 x -0.0424 = +0.0030
+  i=10  +0.0827 x +0.0498 = +0.0041
+  i=11  +0.0600 x +0.0019 = +0.0001
+  Subtotal, coordinates 0-11 (12 terms):          +0.015244
+  Subtotal, coordinates 12-383 (372 terms):       +0.569949
+  Full similarity (sum of both subtotals):        +0.585193
+  Matches ranked score 0.585193: True
+
+=== Question 3 ===
+Question: How frequently must I refresh my laser qualification?
+Question vector shape: (384,) (dtype float32)
+Question vector length=1.000000; within 1e-05 of 1: True
+    [+0.0380, -0.0875, +0.0199, +0.0502, -0.0631, -0.0597, -0.0213, -0.0518, -0.0799, -0.0435, -0.0137, +0.0732]
+
+All scores (dot product over 384 coordinates, ranked):
+  T1  training.txt  score=0.742027
+  B1  booking.txt   score=0.471195
+  A2  access.txt    score=0.449257
+  A1  access.txt    score=0.236327
+  B2  booking.txt   score=0.147310
+  T2  training.txt  score=0.040952
+Cosine check: max |cosine - dot| = 2.85e-08; agree within 1e-05: True
+
+Selected passages (top k = 2):
+[T1] (training.txt) Laser training must be renewed every 12 months. A current training record is required before operating the laser.
+[B1] (booking.txt) Laser room bookings are limited to two hours per session. Reserve the room through the equipment calendar.
+
+Breakdown for top passage T1: question[i] x document[i]
+  i=0   +0.0380 x +0.0063 = +0.0002
+  i=1   -0.0875 x -0.0708 = +0.0062
+  i=2   +0.0199 x +0.0345 = +0.0007
+  i=3   +0.0502 x +0.0146 = +0.0007
+  i=4   -0.0631 x -0.1167 = +0.0074
+  i=5   -0.0597 x -0.0114 = +0.0007
+  i=6   -0.0213 x -0.0708 = +0.0015
+  i=7   -0.0518 x -0.0761 = +0.0039
+  i=8   -0.0799 x -0.0806 = +0.0064
+  i=9   -0.0435 x -0.0767 = +0.0033
+  i=10  -0.0137 x +0.0325 = -0.0004
+  i=11  +0.0732 x +0.1357 = +0.0099
+  Subtotal, coordinates 0-11 (12 terms):          +0.040633
+  Subtotal, coordinates 12-383 (372 terms):       +0.701395
+  Full similarity (sum of both subtotals):        +0.742027
+  Matches ranked score 0.742027: True
+
+=== Question 4 ===
+Question: What is the laser wavelength?
+Question vector shape: (384,) (dtype float32)
+Question vector length=1.000000; within 1e-05 of 1: True
+    [+0.0241, -0.0074, -0.0795, +0.0196, -0.0920, -0.0008, +0.0842, +0.0203, -0.0357, -0.0252, +0.0360, -0.0204]
+
+All scores (dot product over 384 coordinates, ranked):
+  T1  training.txt  score=0.347721
+  A2  access.txt    score=0.320827
+  B1  booking.txt   score=0.311501
+  A1  access.txt    score=0.057951
+  B2  booking.txt   score=-0.043497
+  T2  training.txt  score=-0.054488
+Cosine check: max |cosine - dot| = 3.54e-08; agree within 1e-05: True
+
+Selected passages (top k = 2):
+[T1] (training.txt) Laser training must be renewed every 12 months. A current training record is required before operating the laser.
+[A2] (access.txt) The laser room requires two trained people to be present whenever the laser is operating, including during general laboratory access hours.
+
+Breakdown for top passage T1: question[i] x document[i]
+  i=0   +0.0241 x +0.0063 = +0.0002
+  i=1   -0.0074 x -0.0708 = +0.0005
+  i=2   -0.0795 x +0.0345 = -0.0027
+  i=3   +0.0196 x +0.0146 = +0.0003
+  i=4   -0.0920 x -0.1167 = +0.0107
+  i=5   -0.0008 x -0.0114 = +0.0000
+  i=6   +0.0842 x -0.0708 = -0.0060
+  i=7   +0.0203 x -0.0761 = -0.0015
+  i=8   -0.0357 x -0.0806 = +0.0029
+  i=9   -0.0252 x -0.0767 = +0.0019
+  i=10  +0.0360 x +0.0325 = +0.0012
+  i=11  -0.0204 x +0.1357 = -0.0028
+  Subtotal, coordinates 0-11 (12 terms):          +0.004676
+  Subtotal, coordinates 12-383 (372 terms):       +0.343046
+  Full similarity (sum of both subtotals):        +0.347721
+  Matches ranked score 0.347721: True

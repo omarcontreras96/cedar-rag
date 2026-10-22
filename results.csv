@@ -1,0 +1,5 @@
+question_id,keyword_top_ids,keyword_scores,embedding_top_ids,embedding_scores,required_ids,keyword_evidence_complete,embedding_evidence_complete,observation
+Q1,A1;A2,3;2,A2;T1,0.686446;0.581953,A1;A2,yes (2/2),"partial (1/2, A1 missing)","Keyword got A1 and A2, but A1's top score partly comes from the accidental '00' match; embedding ranked A1 4th (0.374), so the time condition is missing"
+Q2,A2;B1,2;1,A2;T1,0.585193;0.434761,A2,yes (1/1),yes (1/1),Both rank A2 first; keyword matched only 'laser' and 'present'; embedding A2 0.585 vs 0.435 for the next passage
+Q3,T1;A2,2;1,T1;B1,0.742027;0.471195,T1,yes (1/1),yes (1/1),"Embedding handled the paraphrase (T1 0.742); the keyword hit relied on 'laser' and 'must', not the question's content words"
+Q4,A2;B1,1;1,T1;A2,0.347721;0.320827,absent,no (answer absent),no (answer absent),"No passage gives a wavelength; both methods returned laser-related passages anyway (keyword on 'laser' alone; embedding T1 0.348, A2 0.321)"

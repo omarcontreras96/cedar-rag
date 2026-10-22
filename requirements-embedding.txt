@@ -1,0 +1,6 @@
+# Embedding stack for cedar-rag (verified: all-MiniLM-L6-v2 on CPU -> (384,) float32)
+# Python 3.14.8 (Homebrew, arm64 macOS) -- interpreter version, not pip-installable
+sentence-transformers==6.2.0
+torch==2.14.1
+transformers==5.20.2
+numpy==2.5.4

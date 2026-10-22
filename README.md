@@ -1,7 +1,9 @@
 # CEDAR-RAG
 
-A small teaching project for the retrieval half of RAG. It uses a keyword
-retriever built from Python's standard library. It does not generate answers yet.
+A small teaching project for the retrieval half of RAG. It compares a keyword
+retriever built from Python's standard library with an embedding retriever. The
+code does not generate answers. The Q1 and Q4 answers in `evidence/` came from a
+separate claude.ai chat given the embedding top-2 passages, and were then audited.
 
 > Cedar Lab is fictional. Its rules are classroom examples, not operational
 > safety guidance.
@@ -73,8 +75,8 @@ Saved Q1 output: `evidence/embedding-inspection.txt`.
 .venv/bin/python make_results.py
 ```
 
-This writes `results.csv` (top-k IDs and scores for both methods; the judgement
-columns are left blank). Saved output from the runs: `evidence/retrieval-runs.txt`,
+This writes `results.csv` (top-k IDs and scores for both methods). The judgement
+columns were filled in by hand; the script keeps them when it rewrites the file. Saved output from the runs: `evidence/retrieval-runs.txt`,
 `evidence/k-experiment.txt`. Inspection notes: `evidence/retrieval-notes.md`.
 
 ## Model and versions

@@ -23,6 +23,20 @@ Whether this particular student’s training record is current (renewed within 1
 Whether there are any exceptions to the two-person rule (for example, specific procedures, supervisors, or after-hours authorizations). No exceptions appear in the supplied passages.
 Whether both people must hold current training or only the operator. A2 says “two trained people,” which implies both, but it does not say whether “trained” there means “current record” in the sense of T1.
 
+**Claim audit:**
+
+| Claim | Support |
+|---|---|
+| Two trained people must be present whenever the laser is operating | [A2] |
+| The two-person requirement applies during general laboratory access hours as well | [A2] |
+| The requirement is framed as a condition on the laser operating, not on operator identity | [A2] (inference from the wording of A2) |
+| A current training record is required before operating the laser | [T1] |
+| Laser training must be renewed every 12 months | [T1] |
+| 19:00 is or is not within general laboratory access hours | Unsupported (not defined in passages) |
+| The student’s training record is currently valid | Unsupported (not stated in passages) |
+| There are no exceptions to the two-person rule | Unsupported (absence of exceptions in passages, not an affirmative statement) |
+| Both people, not only the operator, need a current record | Unsupported as to the “current record” sense; A2 only says “trained” |
+
 ## Audit
 
 Passages supplied: A2 and T1 (embedding top 2). A1, the access-hours rule, was not retrieved.
@@ -42,6 +56,6 @@ Key checks:
 - Facts imported from outside the passages: none found. In particular, it does not state the 08:00 to 22:00 hours, which appear only in A1, which was not supplied.
 - Invented citations: none.
 
-Failure: the prompt asked for a list of each factual claim and its supporting chunk after the answer. The reply has no such list; it ends with the missing-information section. The answer is still grounded, so we did not rerun it. This is an instruction-following gap, recorded here rather than hidden.
+Claim list: the reply ends with the requested claim-by-claim table. Every claim it cites to A2 or T1 matches the passage text. It correctly marks the access-hours question, the student's record status, exceptions, and the "current record" scope as unsupported rather than inventing support for them. One small point: "There are no exceptions to the two-person rule" is listed as a claim, but the answer never asserts it; it only says no exceptions appear in the passages. Marking it unsupported is the right call.
 
 Retrieval effect: because embedding retrieval missed A1, the answer could not confirm the time condition. Keyword retrieval (A1, A2) would have supplied it.
